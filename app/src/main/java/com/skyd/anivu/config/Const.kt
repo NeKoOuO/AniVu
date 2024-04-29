@@ -9,6 +9,9 @@ object Const {
     const val GITHUB_NEW_ISSUE_URL = "https://github.com/SkyD666/AniVu/issues/new"
     const val TELEGRAM_GROUP = "https://t.me/SkyD666Chat"
     const val DISCORD_SERVER = "https://discord.gg/pEWEjeJTa3"
+
+    const val TRANSLATION_URL = "https://crowdin.com/project/anivu"
+
     const val AFADIAN_LINK = "https://afdian.net/a/SkyD666"
     const val BUY_ME_A_COFFEE_LINK = "https://www.buymeacoffee.com/SkyD666"
 
@@ -17,6 +20,7 @@ object Const {
     const val NIGHT_SCREEN_URL = "https://github.com/SkyD666/NightScreen"
 
     const val BASE_URL = "https://github.com/SkyD666/"
+    const val FAVICON_FETCH_URL = "https://besticon-demo.herokuapp.com/allicons.json"
 
     val TEMP_TORRENT_DIR = File(appContext.cacheDir.path, "Torrent").apply {
         if (!exists()) mkdirs()

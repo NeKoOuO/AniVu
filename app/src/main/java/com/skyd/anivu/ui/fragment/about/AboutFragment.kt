@@ -28,11 +28,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Balance
-import androidx.compose.material.icons.filled.Coffee
-import androidx.compose.material.icons.filled.Lightbulb
-import androidx.compose.material.icons.filled.Translate
-import androidx.compose.material.icons.filled.Update
+import androidx.compose.material.icons.outlined.Balance
+import androidx.compose.material.icons.outlined.Coffee
+import androidx.compose.material.icons.outlined.Lightbulb
+import androidx.compose.material.icons.outlined.Translate
+import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
@@ -76,7 +76,6 @@ import com.skyd.anivu.ext.getAppVersionName
 import com.skyd.anivu.ext.isCompact
 import com.skyd.anivu.ext.openBrowser
 import com.skyd.anivu.ext.plus
-import com.skyd.anivu.ext.showSnackbar
 import com.skyd.anivu.model.bean.OtherWorksBean
 import com.skyd.anivu.ui.component.AniVuIconButton
 import com.skyd.anivu.ui.component.AniVuTopBar
@@ -121,13 +120,13 @@ fun AboutScreen() {
                 title = { Text(text = stringResource(R.string.about_screen_name)) },
                 actions = {
                     AniVuIconButton(
-                        imageVector = Icons.Default.Balance,
+                        imageVector = Icons.Outlined.Balance,
                         contentDescription = stringResource(id = R.string.license_screen_name),
                         onClick = { navController.navigate(R.id.action_to_license_fragment) }
                     )
                     AniVuIconButton(
                         onClick = { openUpdateDialog = true },
-                        imageVector = Icons.Default.Update,
+                        imageVector = Icons.Outlined.Update,
                         contentDescription = stringResource(id = R.string.update_check)
                     )
                 },
@@ -150,13 +149,7 @@ fun AboutScreen() {
                 item {
                     HelpArea(
                         openSponsorDialog = openSponsorDialog,
-                        onTranslateClick = {
-                            snackbarHostState.showSnackbar(
-                                message = "Coming soon...",
-                                scope = scope,
-                                withDismissAction = true,
-                            )
-                        },
+                        onTranslateClick = { Const.TRANSLATION_URL.openBrowser(context) },
                         onSponsorDialogVisibleChange = { openSponsorDialog = it }
                     )
                     ButtonArea()
@@ -176,13 +169,7 @@ fun AboutScreen() {
                             TextArea()
                             HelpArea(
                                 openSponsorDialog = openSponsorDialog,
-                                onTranslateClick = {
-                                    snackbarHostState.showSnackbar(
-                                        message = "Coming soon...",
-                                        scope = scope,
-                                        withDismissAction = true,
-                                    )
-                                },
+                                onTranslateClick = { Const.TRANSLATION_URL.openBrowser(context) },
                                 onSponsorDialogVisibleChange = { openSponsorDialog = it }
                             )
                         }
@@ -321,7 +308,7 @@ private fun HelpArea(
                 .weight(1f)
                 .fillMaxHeight()
         ) {
-            Icon(imageVector = Icons.Default.Translate, contentDescription = null)
+            Icon(imageVector = Icons.Outlined.Translate, contentDescription = null)
             Spacer(modifier = Modifier.width(6.dp))
             Text(text = stringResource(id = R.string.help_translate), textAlign = TextAlign.Center)
         }
@@ -332,7 +319,7 @@ private fun HelpArea(
                 .weight(1f)
                 .fillMaxHeight()
         ) {
-            Icon(imageVector = Icons.Default.Coffee, contentDescription = null)
+            Icon(imageVector = Icons.Outlined.Coffee, contentDescription = null)
             Spacer(modifier = Modifier.width(6.dp))
             Text(text = stringResource(id = R.string.sponsor), textAlign = TextAlign.Center)
         }
@@ -346,7 +333,7 @@ private fun SponsorDialog(visible: Boolean, onClose: () -> Unit) {
     AniVuDialog(
         visible = visible,
         onDismissRequest = onClose,
-        icon = { Icon(imageVector = Icons.Default.Coffee, contentDescription = null) },
+        icon = { Icon(imageVector = Icons.Outlined.Coffee, contentDescription = null) },
         title = { Text(text = stringResource(id = R.string.sponsor)) },
         selectable = false,
         text = {
@@ -360,7 +347,7 @@ private fun SponsorDialog(visible: Boolean, onClose: () -> Unit) {
                     },
                     headlineContent = { Text(text = stringResource(R.string.sponsor_afadian)) },
                     leadingContent = {
-                        Icon(imageVector = Icons.Default.Lightbulb, contentDescription = null)
+                        Icon(imageVector = Icons.Outlined.Lightbulb, contentDescription = null)
                     }
                 )
                 HorizontalDivider()
@@ -371,7 +358,7 @@ private fun SponsorDialog(visible: Boolean, onClose: () -> Unit) {
                     },
                     headlineContent = { Text(text = stringResource(R.string.sponsor_buy_me_a_coffee)) },
                     leadingContent = {
-                        Icon(imageVector = Icons.Default.Coffee, contentDescription = null)
+                        Icon(imageVector = Icons.Outlined.Coffee, contentDescription = null)
                     }
                 )
             }

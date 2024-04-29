@@ -14,10 +14,10 @@ import com.skyd.anivu.ext.dataStore
 import com.skyd.anivu.ext.getOrDefault
 import com.skyd.anivu.model.bean.ARTICLE_TABLE_NAME
 import com.skyd.anivu.model.bean.ArticleBean
-import com.skyd.anivu.model.bean.ArticleWithEnclosureBean
 import com.skyd.anivu.model.bean.ArticleWithFeed
 import com.skyd.anivu.model.bean.FEED_TABLE_NAME
-import com.skyd.anivu.model.bean.FeedBean
+import com.skyd.anivu.model.bean.FEED_VIEW_NAME
+import com.skyd.anivu.model.bean.FeedViewBean
 import com.skyd.anivu.model.db.dao.ArticleDao
 import com.skyd.anivu.model.db.dao.FeedDao
 import com.skyd.anivu.model.db.dao.SearchDomainDao
@@ -50,7 +50,7 @@ class SearchRepository @Inject constructor(
                     val key = params.key ?: 0
                     withContext(Dispatchers.IO) {
                         val feedSql = genSql(
-                            tableName = FEED_TABLE_NAME,
+                            tableName = FEED_VIEW_NAME,
                             k = query,
                             limit = { key to params.loadSize },
                         )
@@ -85,14 +85,14 @@ class SearchRepository @Inject constructor(
 
     fun requestSearchFeed(
         query: String,
-    ): Flow<PagingData<FeedBean>> {
-        return flow { emit(genSql(tableName = FEED_TABLE_NAME, k = query)) }.flatMapConcat { sql ->
+    ): Flow<PagingData<FeedViewBean>> {
+        return flow { emit(genSql(tableName = FEED_VIEW_NAME, k = query)) }.flatMapConcat { sql ->
             Pager(pagingConfig) { feedDao.getFeedPagingSource(sql) }.flow
         }.flowOn(Dispatchers.IO)
     }
 
     fun requestSearchArticle(
-        feedUrl: String? = null,
+        feedUrls: List<String>,
         query: String,
     ): Flow<PagingData<ArticleWithFeed>> {
         return flow {
@@ -100,8 +100,10 @@ class SearchRepository @Inject constructor(
                 genSql(
                     tableName = ARTICLE_TABLE_NAME,
                     k = query,
-                    leadingFilter = if (feedUrl == null) "1"
-                    else "${ArticleBean.FEED_URL_COLUMN} = ${DatabaseUtils.sqlEscapeString(feedUrl)}",
+                    leadingFilter = if (feedUrls.isEmpty()) "1"
+                    else "${ArticleBean.FEED_URL_COLUMN} IN (${
+                        feedUrls.joinToString(", ") { DatabaseUtils.sqlEscapeString(it) }
+                    })",
                 )
             )
         }.flatMapConcat { sql ->
